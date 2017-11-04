@@ -20,6 +20,7 @@
       "typeorm": "0.1.2"
    },
    "scripts": {
-      "start": "ts-node --inspect -r dotenv/config src/index.ts"
+      "start": "ts-node --inspect -r dotenv/config src/index.ts",
+      "start:prod": "npm install && ts-node -r dotenv/config src/index.ts"
    }
 }

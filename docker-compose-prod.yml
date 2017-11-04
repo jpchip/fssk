@@ -1,0 +1,32 @@
+version: '2'
+services:
+  client:
+    build:
+      context: client
+      dockerfile: Dockerfile-prod
+    image: 'fssk_client_prod'
+    volumes:
+      - '/opt/client:/home/app/client/dist'
+    env_file: client/.env
+    command: npm run build
+  server:
+    build:
+      context: server
+      dockerfile: Dockerfile-prod
+    ports:
+      - '4000:4000'
+    volumes:
+      - '/opt/client:/home/app/server/public'
+    depends_on:
+      - client
+      - postgres
+    env_file: server/.env
+    command: npm run start:prod
+  postgres:
+      env_file: server/.env
+      image: 'postgres:latest'
+      container_name: 'postgres'
+      ports:
+        - '5432:5432'
+      volumes:
+        - './util/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh'
